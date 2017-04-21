@@ -1,0 +1,20 @@
+<?php
+class Aa{
+    public $a=0;
+    public $b=0;
+    
+    public function set(){
+        $this->a=1;
+        $this->b=2;
+    }
+    
+    public function p(){
+        echo $this->a;
+        echo " ";
+        echo $this->b;
+    }
+}
+$x=new Aa();
+$x->set();
+$x->p();
+?>
