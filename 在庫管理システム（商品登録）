@@ -1,0 +1,61 @@
+<html>
+ <head>
+  <title></title>
+ </head>
+ <body>
+  <form action="./object1_1.php" method="post">
+    <a>title</a>
+    <br><input type="text" name="title"></br>
+    <a>creater</a>
+    <br><input type="text" name="creater"></br>
+    <a>ID</a>
+    <br><input type="text" name="id"></br>
+   <input type="submit" name="btnSubmit" value="登録">
+   <input type="submit" name="jump" value="登録商品一覧へ">
+  </from>
+  <?php
+  try {
+    $pdo_object=new PDO('mysql:host=localhost;dbname=p;charset=utf8','yuiyuigahama','0618');
+
+    $title=$_POST["title"];
+    $creater=$_POST["creater"];
+    $id=$_POST["id"];
+
+    $sql="INSERT INTO iteminfo2(title,creater,id) VALUES(:title,:creater,:id)";
+    $query= $pdo_object->prepare($sql);
+    $query->bindValue(':title',$title);
+    $query->bindValue(':creater',$creater);
+    $query->bindValue(':id',$id);
+    $query->execute();
+    $sql="SELECT*FROM iteminfo2
+    where title=:title and creater =:creater and id=:id";
+    $query= $pdo_object->prepare($sql);
+    $query->bindValue(':title',$title);
+    $query->bindValue(':creater',$creater);
+    $query->bindValue(':id',$id);
+    $query-> execute();
+    $result=$query->fetchall(PDO::FETCH_ASSOC);
+    if($result!=null){
+      echo "    "."<br>";
+      echo "登録できました。"."<br>";
+      foreach ($result as $value){
+          echo "商品ID:{$value["id"]}"."<br>";
+          echo "タイトル:{$value["title"]}"."<br>";
+          echo "作者:{$value["creater"]}"."<br>";
+          echo "<br>";
+       }
+    }
+    $pdo_object=null;
+  } catch (PDOException $Exception) {
+    die('接続に失敗しました:'.$Exception->getMessage());
+  }
+  ?>
+  <?php
+  $jump=$_POST["jump"];
+  if($jump!=null){
+    header( "Location: ./object1_2.php" );
+    exit ;
+  }
+  ?>
+ </body>
+</html>
