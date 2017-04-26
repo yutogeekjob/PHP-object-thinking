@@ -1,0 +1,35 @@
+<html>
+ <head>
+  <title></title>
+ </head>
+ <body>
+  <form action="./object1.php" method="post">
+    <a>username</a>
+    <br><input type="text" name="username"></br>
+    <a>pass</a>
+    <br><input type="password" name="pass"></br>
+   <input type="submit" name="btnSubmit">
+  </from>
+  <?php
+  try {
+    $pdo_object=new PDO('mysql:host=localhost;dbname=p;charset=utf8','yuiyuigahama','0618');
+
+    $username=$_POST["username"];
+    $pass=$_POST["pass"];
+
+    $sql="SELECT*FROM userinfo WHERE username=:username AND pass=:pass";
+    $query= $pdo_object->prepare($sql);
+    $query->bindValue(':username',$username);
+    $query->bindValue(':pass',$pass);
+    $query-> execute();
+    $result=$query->fetchall(PDO::FETCH_ASSOC);
+    if($result!=null){
+      header( "Location: ./object1_1.php" );
+    }
+    $pdo_object=null;
+  } catch (PDOException $Exception) {
+    die('接続に失敗しました:'.$Exception->getMessage());
+  }
+  ?>
+ </body>
+</html>
