@@ -1,0 +1,28 @@
+<html>
+ <head>
+  <title></title>
+ </head>
+ <body>
+  <?php
+  try {
+    $pdo_object=new PDO('mysql:host=localhost;dbname=p;charset=utf8','yuiyuigahama','0618');
+
+    $sql="SELECT*FROM iteminfo2";
+    $query= $pdo_object->prepare($sql);
+    $query-> execute();
+    $result=$query->fetchall(PDO::FETCH_ASSOC);
+    if($result!=null){
+      foreach ($result as $value){
+          echo "商品ID:{$value["id"]}"."<br>";
+          echo "タイトル:{$value["title"]}"."<br>";
+          echo "作者:{$value["creater"]}"."<br>";
+          echo "<br>";
+       }
+    }
+    $pdo_object=null;
+  } catch (PDOException $Exception) {
+    die('接続に失敗しました:'.$Exception->getMessage());
+  }
+  ?>
+ </body>
+</html>
